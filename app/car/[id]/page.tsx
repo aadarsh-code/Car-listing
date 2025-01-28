@@ -14,11 +14,12 @@ import {
   Cog,
 } from "lucide-react";
 
-interface CarDetailsPageProps {
+interface PageProps {
   params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 }
 
-export default async function CarDetails({ params }: CarDetailsPageProps) {
+export default async function CarDetails({ params, searchParams }: PageProps) {
   const car = await getCarById(params.id);
 
   if (!car) {
