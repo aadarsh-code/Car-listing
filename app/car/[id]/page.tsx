@@ -14,11 +14,10 @@ import {
   Cog,
 } from "lucide-react";
 
-export default async function CarDetails({
-  params,
-}: {
+interface CarDetailsProps {
   params: { id: string };
-}) {
+}
+export default async function CarDetails({ params }: CarDetailsProps) {
   let car;
   let error = null;
   try {
