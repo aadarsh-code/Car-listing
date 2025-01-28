@@ -13,11 +13,16 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
-interface SearchParams {
+// interface SearchParams {
+//   [key: string]: string | string[] | undefined;
+// }
+type SearchParams = Promise<{
   [key: string]: string | string[] | undefined;
-}
+}>;
 
-function sanitizeSearchParams(params: SearchParams): Record<string, string> {
+function sanitizeSearchParams(
+  params: Record<string, string | string[] | undefined>
+): Record<string, string> {
   const sanitized: Record<string, string> = {};
   Object.keys(params).forEach((key) => {
     const value = params[key];
@@ -30,7 +35,9 @@ function sanitizeSearchParams(params: SearchParams): Record<string, string> {
   return sanitized;
 }
 
-async function getSearchParams(searchParams: SearchParams) {
+async function getSearchParams(
+  searchParams: Record<string, string | string[] | undefined>
+) {
   const sanitizedParams = sanitizeSearchParams(searchParams);
   const page = Number(sanitizedParams.page) || 1;
   const pageSize = 9;
@@ -67,8 +74,10 @@ export default async function Home({
 }: {
   searchParams: SearchParams;
 }) {
+  const resolvedParams = await searchParams;
+
   const { page, pageSize, search, sort, filters, sanitizedParams } =
-    await getSearchParams(searchParams);
+    await getSearchParams(resolvedParams);
 
   const { cars, total } = await getCarData(
     page,

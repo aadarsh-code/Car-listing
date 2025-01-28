@@ -14,13 +14,13 @@ import {
   Cog,
 } from "lucide-react";
 
-interface PageProps {
-  params: { id: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-}
-
-export default async function CarDetails({ params }: PageProps) {
-  const car = await getCarById(params.id);
+export default async function CarDetails({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const car = await getCarById(id);
 
   if (!car) {
     notFound();
